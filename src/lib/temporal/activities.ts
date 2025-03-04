@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Logger } from '@/lib/logger';
-
+import dotenv from "dotenv";
+dotenv.config();
 const {
     TRAFFIC_API_KEY,
     OPENAI_API_KEY,
@@ -124,7 +125,7 @@ export async function generateDelayMessage(delayMinutes: number): Promise<string
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const messagingServiceSid = 'MGXXXXXXXXXXX';
+const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
 
 /**
  * Send an SMS via Twilio.

@@ -2,9 +2,15 @@
 
 ### Local development:
 
+## NOTE for test we need to use origin lat/log and destination lat/log coordinates as example `40.7128,-74.0060` and `34.0522,-118.2437`
+
 #### Update local .env file by adding value to:
 ```bash
-
+TRAFFIC_API_KEY='TRAFFIC_API_KEY'
+OPENAI_API_KEY='OPENAI_API_KEY'
+TWILIO_ACCOUNT_SID='TWILIO_ACCOUNT_SID'
+TWILIO_AUTH_TOKEN='TWILIO_AUTH_TOKEN'
+TWILIO_MESSAGING_SERVICE_SID='TWILIO_MESSAGING_SERVICE_SID'
 ```
 
 #### Install packages
@@ -26,14 +32,16 @@ temporal server start-dev
 npm run start-worker
 ```
 
+#### Build the app
+
 ```bash
 npm run dev
 ```
 
-for test run:
+#### for test run:
 
 ```bash
-
+npm run test
 ```
 
 
@@ -43,45 +51,40 @@ Project Structure
 
 freight-delay-notif-app/
 ├─ app/
-│  ├─ page/
-│  │  └─ traffic.tsx         <-- A Next.js page with a form for route & contact info
 │  └─ api/
 │     └─ freight-delay/
 │        └─ freight-delay.ts      <-- An API route that triggers the Temporal workflow
 ├─ lib/
 │  ├─ temporal/
-│  │  ├─ activities.ts    <-- SDK: fetch traffic data, AI message generation, send notification
+│  │  ├─ activities.ts    <-- Activities: fetch traffic data, AI message generation, send notification
 │  │  ├─ workflows.ts     <-- Orchestration workflow definition
 │  │  └─ worker.ts        <-- Temporal Worker entry point (runs separately)
-│  └─ index.ts           <-- Logger utility
+│  └─ logger/           <-- Logger utility
 ├─ pages/
 │  ├─ api/
 │  │  └─ freight-delay.ts        <-- api route for post request (/api/freight-delay)
-│  ├─ _app.tsx           <-- Logger utility
-│  └─ index.tsx           <-- Logger utility
-├─ .env.local
+│  ├─ _app.tsx           <-- app page
+│  └─ index.tsx           <-- index page
+├─ .env.sample
 ├─ package.json
 ├─ tsconfig.json
 └─ ...
 
-### SDK 
+### APP 
 2. Activities (lib/temporal/activities.ts)
 
-Below is an updated activity that fetches traffic data from a Mapbox or Google Maps service, 
-calculates delay, and so on. (Here we show a mock snippet for Mapbox, but you can adapt it for 
-Google Maps’ Directions API with traffic.)
+Fetches traffic data from a Mapbox or Google Maps service, calculates delay, and so on.
 
 3. Workflow (lib/temporal/workflows.ts)
 
-We define the orchestration using Temporal’s workflow. Notice we now accept origin, destination, and contact as
-parameters rather than a routeId.
+We define the orchestration using Temporal’s workflow which accept origin, destination, and contact as
+parameters.
 
 4. Temporal Worker (lib/temporal/worker.ts)
 
-A standalone Node.js process that registers and runs the activities. You can start this with a script like
-"start-worker": "ts-node lib/temporal/worker.ts" in your package.json.
+A standalone Node.js process that registers and runs the activities.
 
-5. Next.js API Route (/api/freight-delay/freight-delay.ts)
+5. Next.js API Route (/pages/api/freight-delay.ts)
 
 When the user submits a form in Next.js, we’ll POST to /api/freight-delay. That route will start 
 the Temporal workflow, passing in the data from the form.
