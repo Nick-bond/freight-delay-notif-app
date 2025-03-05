@@ -15,7 +15,7 @@ export default async function handler(
 ) {
     if (req.method === 'POST') {
         try {
-            const { origin, destination, contact } = req.body;
+            const { origin, destination, contact } = req.body
 
             if (!origin || !destination || !contact) {
                 return res.status(400).json(
@@ -27,8 +27,6 @@ export default async function handler(
             const client = new WorkflowClient({
                 connection,
             });
-
-            console.log('client', client)
             // Start the workflow
             const handle = await client.start(FreightDeliveryDelayWorkflow, {
                 args: [origin, destination, contact],

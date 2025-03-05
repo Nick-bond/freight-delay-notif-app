@@ -3,6 +3,14 @@
 import React, { useState } from 'react';
 import { Logger } from '@/lib/logger';
 
+import {
+    Box,
+    Paper,
+    Typography,
+    TextField,
+    Button
+} from '@mui/material';
+
 export default function TrafficPage() {
     const [origin, setOrigin] = useState('');
     const [destination, setDestination] = useState('');
@@ -34,96 +42,79 @@ export default function TrafficPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-gray-100 p-6">
-            <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
-                <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        <Box
+            // Full viewport height, centered content
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+                bgcolor: 'grey.100', // light background color
+                p: 2
+            }}
+        >
+            <Paper
+                elevation={3}
+                sx={{
+                    maxWidth: 400,
+                    width: '100%',
+                    p: 4,
+                    borderRadius: 2
+                }}
+            >
+                <Typography variant="h5" component="h1" align="center" gutterBottom>
                     Check Traffic & Notify
-                </h1>
+                </Typography>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Origin */}
-                    <div>
-                        <label
-                            htmlFor="origin"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                        >
-                            Origin
-                        </label>
-                        <input
-                            id="origin"
-                            type="text"
-                            value={origin}
-                            onChange={(e) => setOrigin(e.target.value)}
-                            placeholder="e.g. 1600 Pennsylvania Ave, DC"
-                            required
-                            className="block w-full rounded-md border border-gray-300
-                         px-3 py-2 text-gray-900 focus:outline-none
-                         focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-                        />
-                    </div>
+                {/* The form */}
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2
+                    }}
+                >
+                    <TextField
+                        required
+                        id="origin"
+                        label="Origin"
+                        variant="outlined"
+                        value={origin}
+                        onChange={(e) => setOrigin(e.target.value)}
+                    />
 
-                    {/* Destination */}
-                    <div>
-                        <label
-                            htmlFor="destination"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                        >
-                            Destination
-                        </label>
-                        <input
-                            id="destination"
-                            type="text"
-                            value={destination}
-                            onChange={(e) => setDestination(e.target.value)}
-                            placeholder="e.g. One Apple Park Way, CA"
-                            required
-                            className="block w-full rounded-md border border-gray-300
-                         px-3 py-2 text-gray-900 focus:outline-none
-                         focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-                        />
-                    </div>
+                    <TextField
+                        required
+                        id="destination"
+                        label="Destination"
+                        variant="outlined"
+                        value={destination}
+                        onChange={(e) => setDestination(e.target.value)}
+                    />
 
-                    {/* Contact */}
-                    <div>
-                        <label
-                            htmlFor="contact"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                        >
-                            Contact (Email or Phone)
-                        </label>
-                        <input
-                            id="contact"
-                            type="text"
-                            value={contact}
-                            onChange={(e) => setContact(e.target.value)}
-                            placeholder="e.g. you@example.com or +123456789"
-                            required
-                            className="block w-full rounded-md border border-gray-300
-                         px-3 py-2 text-gray-900 focus:outline-none
-                         focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-                        />
-                    </div>
+                    <TextField
+                        required
+                        id="contact"
+                        label="Contact (Phone number)"
+                        variant="outlined"
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
+                    />
 
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-full rounded-md bg-blue-600 text-white
-                       font-semibold py-2 hover:bg-blue-700
-                       focus:outline-none focus:ring-2
-                       focus:ring-blue-600 focus:ring-offset-2
-                       transition-colors"
-                    >
+                    <Button variant="contained" type="submit">
                         Check & Notify
-                    </button>
-                </form>
+                    </Button>
+                </Box>
 
                 {/* Status Message */}
                 {status && (
-                    <p className="mt-4 text-center text-sm text-gray-700">
+                    <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                         {status}
-                    </p>
+                    </Typography>
                 )}
-            </div>
-        </div>
+            </Paper>
+        </Box>
     );
 }

@@ -49,11 +49,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 Project Structure 
 
+```
 freight-delay-notif-app/
 ├─ app/
+│  ├─ components
+│  │  └─ traffic.tsx     <-- An main component (form) for index page
 │  └─ api/
-│     └─ freight-delay/
-│        └─ freight-delay.ts      <-- An API route that triggers the Temporal workflow
+│     ├─ freight-delay.ts       <-- An API route that triggers the Temporal workflow
+│     └─ send-messages.ts      <-- An API route that triggers the Twillio api
 ├─ lib/
 │  ├─ temporal/
 │  │  ├─ activities.ts    <-- Activities: fetch traffic data, AI message generation, send notification
@@ -69,6 +72,7 @@ freight-delay-notif-app/
 ├─ package.json
 ├─ tsconfig.json
 └─ ...
+```
 
 ### APP 
 2. Activities (lib/temporal/activities.ts)

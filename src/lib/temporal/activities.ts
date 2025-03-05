@@ -123,10 +123,6 @@ export async function generateDelayMessage(delayMinutes: number): Promise<string
     }
 }
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
-
 /**
  * Send an SMS via Twilio.
  *
@@ -135,23 +131,22 @@ const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
  * @returns         Promise<boolean> (true if success, false otherwise)
  */
 
-export async function sendNotification(recipient: string, message: string): Promise<boolean> {
-    const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+export async function sendNotification(recipient: string, message: string): Promise<void> {
+    try {
+        const res = await fetch('/api/send-message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ recipient, message }),
+        });
 
-    const formData = new URLSearchParams();
-    formData.append('To', recipient);
-    formData.append('MessagingServiceSid', messagingServiceSid);
-    formData.append('Body', message);
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || 'Request failed');
+        }
 
-    const response = await axios.post(url, formData, {
-        auth: { username: accountSid as string, password: authToken as string },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
-
-    if (response.data.status === 'success') {
-      Logger.info('Notification sent successfully.');
-      return true;
-    } else {
-      throw new Error(response.data.error || 'Unknown error sending notification');
+        Logger.info('Notification sent successfully.');
+    } catch (error: any) {
+        Logger.error(error);
+        throw new Error(error || 'Unknown error sending notification');
     }
 }

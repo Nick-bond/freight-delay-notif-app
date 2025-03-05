@@ -25,13 +25,7 @@ export async function FreightDeliveryDelayWorkflow(
 
     if (delayMinutes > DELAY_THRESHOLD) {
         const message = await generateDelayMessage(delayMinutes);
-        const success = await sendNotification(contact, message);
-
-        if (success) {
-            Logger.info(`Notification sent to ${contact}`);
-        } else {
-            Logger.error(`Failed to send notification to ${contact}`);
-        }
+        await sendNotification(contact, message);
     } else {
         Logger.info(`Delay is under threshold: ${delayMinutes} min. No notification sent.`);
     }
