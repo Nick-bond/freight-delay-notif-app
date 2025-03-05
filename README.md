@@ -1,5 +1,7 @@
 ## Freight Delay APP  
 
+![alt text](public/main.png);
+
 ### Local development:
 
 ## NOTE for test we need to use origin lat/log and destination lat/log coordinates as example `40.7128,-74.0060` and `34.0522,-118.2437`
@@ -11,6 +13,7 @@ OPENAI_API_KEY='OPENAI_API_KEY'
 TWILIO_ACCOUNT_SID='TWILIO_ACCOUNT_SID'
 TWILIO_AUTH_TOKEN='TWILIO_AUTH_TOKEN'
 TWILIO_MESSAGING_SERVICE_SID='TWILIO_MESSAGING_SERVICE_SID'
+TWILIO_PHONE_NUMBER='TWILIO_PHONE_NUMBER'
 ```
 
 #### Install packages

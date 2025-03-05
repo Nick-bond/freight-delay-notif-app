@@ -133,7 +133,7 @@ export async function generateDelayMessage(delayMinutes: number): Promise<string
 
 export async function sendNotification(recipient: string, message: string): Promise<void> {
     try {
-        const res = await fetch('/api/send-message', {
+        const res = await fetch('http://localhost:3000/api/send-message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recipient, message }),

@@ -12,14 +12,15 @@ export default async function handler(
     res: NextApiResponse<ResponseData>
 ) {
     if (req.method === 'POST') {
-        const {recipient, message } = JSON.parse(req.body)
+        const {recipient, message } = req.body
 
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
+        const phoneNumber = process.env.TWILIO_PHONE_NUMBER;
         const client = twilio(accountSid, authToken)
 
         client.messages.create({
-            from: '+13157125351',
+            from: phoneNumber,
             to: recipient,
             body: message,
         }).then((message) => {
